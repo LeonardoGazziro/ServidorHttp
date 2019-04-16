@@ -2,96 +2,25 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 
 
-def define_unidade(numero):
-    '''
-    Função utilizada para definir a casa das unidades
-    :param numero: número que será transformado em extenso.
-    :return: retorna o extenso do número
-    '''
+def num_extenso(num):
+    nums_20_90 = ['vinte', 'trinta', 'quarenta', 'cinquenta', 'sessenta', 'setenta', 'oitenta', 'noventa']
+    nums_0_19 = ['zero','um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez', 'onze', 'doze',
+                 'treze','quatorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove']
+    nums_dict = {100: 'cento', 1000:'mil'}
+    if num < 20:
+        return nums_0_19[num]
+    if num < 100:
+        return nums_20_90[int(num/10-2)] + ('' if num % 10 == 0 else ' ' + nums_0_19[int(num % 10)])
 
-    _unidade = ['', 'um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove']
+    chaves = []
+    for chave in nums_dict.keys():
+        if chave <= num:
+            chaves.append(chave)
 
-    return _unidade[int(numero)]
+    chave_max = max(chaves)
 
-
-def define_dezenas(numero):
-    '''
-    Função utilizada pra definir a casa das dezenas e unidades, caso necessário
-    :param numero: número que será transformado em extenso.
-    :return: retorna o extenso do número
-    '''
-
-    _dezena = ['vinte', 'trinta', 'quarenta', 'cinquenta', 'sessenta', 'setenta', 'oitenta', 'noventa']
-    _primeira_dezena = ['dez', 'onze', 'doze', 'treze', 'quatorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito',
-                        'dezenove']
-
-    if len(numero) == 1:
-        _extenso = define_unidade(numero[1])
-    elif len(numero) == 2 and numero[0] == '1':
-        _extenso_dezena = _primeira_dezena[int(numero[1])]
-    elif len(numero) == 2 and numero[0] != '1':
-        if numero[0] == '0':
-            _extenso_dezena = define_unidade(numero[1])
-        elif numero[1] == '0':
-            _extenso_dezena = _dezena[int(numero[0]) - 2]
-        else:
-            _extenso_dezena = f'{_dezena[int(numero[0]) - 2]} e {define_unidade(numero[1])}'
-
-    return _extenso_dezena
-
-
-def define_centena(numero):
-    '''
-    Função utilizada pra definir a casa das centenas, dezenas e unidades.
-    :param numero: número que será transformado em extenso.
-    :return: retorna o extenso do número
-    '''
-
-    _centena = ['', 'cento', 'duzentos', 'trezentos', 'quatrocentos', 'quinhentos', 'seiscentos', 'setecentos',
-                'oitocentos', 'novecentos']
-
-    if numero == '100':
-        _extenso = 'Cem'
-    else:
-        _ext_dezena = define_dezenas(numero[1:])
-        if numero[0] == '0':
-            _extenso = _ext_dezena
-        elif _ext_dezena != '':
-            _extenso = f'{_centena[int(numero[0])]} e {_ext_dezena}'
-        else:
-            _extenso = _centena[int(numero[0])]
-
-    return _extenso
-
-
-def define_milhar(numero, usar_e=False):
-    '''
-    Função utilizada pra definir a casa do milhar, centena, dezena e unidade.
-    :param numero: número que será transformado em extenso.
-    :param usar_e: acrescenta o "e" após a casa do milhar
-    :return: retorna o extenso do número
-    '''
-
-    if len(numero) == 4:
-        _milhar = numero[0]
-        _ext_milhar = define_unidade(_milhar)
-        _centena = numero[1:]
-    elif len(numero) == 5:
-        _milhar = numero[0:2]
-        _ext_milhar = define_dezenas(_milhar)
-        _centena = numero[2:]
-
-    _ext_centena = define_centena(_centena)
-
-    if _ext_centena != '':
-        if usar_e:
-            _ext = f'{_ext_milhar} mil e {_ext_centena}'
-        else:
-            _ext = f'{_ext_milhar} mil {_ext_centena}'
-    else:
-        _ext = f'{_ext_milhar} mil'
-
-    return _ext
+    return num_extenso(int(num / chave_max)) + ' e ' + nums_dict[chave_max] + \
+           ('' if num % chave_max == 0 else ' e ' + num_extenso(int(num % chave_max)))
 
 
 def criar_extenso(numero):
@@ -101,29 +30,17 @@ def criar_extenso(numero):
     :return: número por extenso.
     '''
 
-    if numero == '0':
-        return 'Zero'
-
     _menos = None
     if numero[0] == '-':
         _menos = 'menos'
         numero = numero[1:]
 
-    if len(numero) == 1:
-        _extenso = define_unidade(numero)
-    elif len(numero) == 2:
-        _extenso = define_dezenas(numero)
-    elif len(numero) == 3:
-        _extenso = define_centena(numero)
-    elif 3 < len(numero) <= 5:
-        _extenso = define_milhar(numero, True)
+    if len(numero) <= 5:
+        _extenso = num_extenso(numero)
     else:
-        _extenso = 'Número não permitido'
+        return 'Número não permitido'
 
-    if _menos:
-        _extenso = f'{_menos} {_extenso}'
-
-    return _extenso
+    return f'{_menos} {_extenso}' if _menos else _extenso
 
 
 def gerar_json(numero):
