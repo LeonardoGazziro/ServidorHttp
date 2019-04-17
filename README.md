@@ -1,7 +1,6 @@
 # Servidor HTTP
 
 Servidor HTTP, criado em Python 3.x, que retorna um JSON com o extenso de um número passado no path de requisições GET. Retorna apenas números entre -99999 e 99999.
-O
 
 # Como usar
 
@@ -24,4 +23,4 @@ abra o CMD entre na pasta onde esta o arquivo server.py e digite:
 python server.py
 ```
 
-o servidor esta funcionando, acesse o navegar e utilize localhost:4000/ conforme explicado no passo 4.
+o servidor esta funcionando, em seu navegador, utilize localhost:4000/ conforme explicado no passo 4.
