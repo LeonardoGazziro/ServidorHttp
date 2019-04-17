@@ -18,7 +18,7 @@ git clone https://github.com/LeonardoGazziro/ServidorHttp.git
 para fazer download do projeto acesse:
 https://github.com/LeonardoGazziro/ServidorHttp/tree/dev
 
-Utilização no Windows
+Utilização no Windows:
 abra o CMD entre na pasta onde esta o arquivo server.py e digite:
 ```console
 python server.py
