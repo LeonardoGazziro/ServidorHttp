@@ -6,21 +6,18 @@ def num_extenso(num):
     nums_20_90 = ['vinte', 'trinta', 'quarenta', 'cinquenta', 'sessenta', 'setenta', 'oitenta', 'noventa']
     nums_0_19 = ['zero','um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez', 'onze', 'doze',
                  'treze','quatorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove']
-    nums_dict = {100: 'cento', 1000:'mil'}
+    nums_100_900 = ['', 'cento', 'duzentos', 'trezentos', 'quatrocentos', 'quinhentos', 'seiscentos', 'setecentos',
+                    'oitocentos', 'novecentos']
     if num < 20:
         return nums_0_19[num]
     if num < 100:
-        return nums_20_90[int(num/10-2)] + ('' if num % 10 == 0 else ' ' + nums_0_19[int(num % 10)])
+        return nums_20_90[int(num/10-2)] + ('' if num % 10 == 0 else ' e ' + nums_0_19[int(num % 10)])
+    if num < 1000:
+        return nums_100_900[int(num/100)] + \
+               ('' if num % 100 == 0 else ' e ' + num_extenso(int(num % 100)))
 
-    chaves = []
-    for chave in nums_dict.keys():
-        if chave <= num:
-            chaves.append(chave)
-
-    chave_max = max(chaves)
-
-    return num_extenso(int(num / chave_max)) + ' e ' + nums_dict[chave_max] + \
-           ('' if num % chave_max == 0 else ' e ' + num_extenso(int(num % chave_max)))
+    return num_extenso(int(num / 1000)) + ' mil ' + \
+           ('' if num % 1000 == 0 else ' e ' + num_extenso(int(num % 1000)))
 
 
 def criar_extenso(numero):
@@ -36,7 +33,7 @@ def criar_extenso(numero):
         numero = numero[1:]
 
     if len(numero) <= 5:
-        _extenso = num_extenso(numero)
+        _extenso = num_extenso(int(numero))
     else:
         return 'Número não permitido'
 
@@ -72,4 +69,5 @@ class Server(BaseHTTPRequestHandler):
 
 
 httpd = HTTPServer(('localhost', 4000), Server)
+print('Servidor iniciado na porta 4000')
 httpd.serve_forever()
