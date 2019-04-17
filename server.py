@@ -3,6 +3,11 @@ import json
 
 
 def num_extenso(num):
+    '''
+    Retorna o numero por extenso
+    :param numero: número que será transformado em extenso.
+    :return: número por extenso.
+    '''
     nums_20_90 = ['vinte', 'trinta', 'quarenta', 'cinquenta', 'sessenta', 'setenta', 'oitenta', 'noventa']
     nums_0_19 = ['zero','um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez', 'onze', 'doze',
                  'treze','quatorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove']
@@ -13,6 +18,9 @@ def num_extenso(num):
     if num < 100:
         return nums_20_90[int(num/10-2)] + ('' if num % 10 == 0 else ' e ' + nums_0_19[int(num % 10)])
     if num < 1000:
+        if num == 100:
+            return 'Cem'
+
         return nums_100_900[int(num/100)] + \
                ('' if num % 100 == 0 else ' e ' + num_extenso(int(num % 100)))
 

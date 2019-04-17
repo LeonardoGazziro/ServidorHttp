@@ -1,6 +1,7 @@
 # Servidor HTTP
 
 Servidor HTTP, criado em Python 3.x, que retorna um JSON com o extenso de um número passado no path de requisições GET. Retorna apenas números entre -99999 e 99999.
+O
 
 # Como usar
 
@@ -9,6 +10,7 @@ Servidor HTTP, criado em Python 3.x, que retorna um JSON com o extenso de um nú
 3. Abra a pasta do projeto e execute o Server.py
 4. No browser faça uma requisição para localhost:4000/numero (ex: localhost:4000/1234)
 
+
 para clonar o repositório utilize:
 ```console
 git clone https://github.com/LeonardoGazziro/ServidorHttp.git
@@ -16,6 +18,7 @@ git clone https://github.com/LeonardoGazziro/ServidorHttp.git
 para fazer download do projeto acesse:
 https://github.com/LeonardoGazziro/ServidorHttp/tree/dev
 
+Utilização no Windows
 abra o CMD entre na pasta onde esta o arquivo server.py e digite:
 ```console
 python server.py
