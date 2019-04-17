@@ -21,4 +21,4 @@ abra o CMD entre na pasta onde esta o arquivo server.py e digite:
 python server.py
 ```
 
-o servidor esta funcionando, acesse o navegar e utilze localhost:4000/ conforme explicado no passo 4.
+o servidor esta funcionando, acesse o navegar e utilize localhost:4000/ conforme explicado no passo 4.
